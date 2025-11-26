@@ -1,11 +1,13 @@
 @objc(AMapViewManager)
 class AMapViewManager: RCTViewManager {
+    
+  let mapView = MapView()
+    
   override class func requiresMainQueueSetup() -> Bool { false }
 
   override func view() -> UIView {
-    let view = MapView()
-    view.delegate = view
-    return view
+    mapView.delegate = mapView
+    return mapView
   }
 
   @objc func moveCamera(_ reactTag: NSNumber, position: NSDictionary, duration: Int) {
@@ -22,7 +24,8 @@ class AMapViewManager: RCTViewManager {
 
   func getView(reactTag: NSNumber, callback: @escaping (MapView) -> Void) {
     bridge.uiManager.addUIBlock { _, viewRegistry in
-      callback(viewRegistry![reactTag] as! MapView)
+        callback(self.mapView)
+        
     }
   }
 }
